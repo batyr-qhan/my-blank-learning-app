@@ -1,24 +1,36 @@
-import {
-  Platform,
-  SafeAreaViewComponent,
-  StatusBar,
-  Text,
-  View,
-} from "react-native";
-import {
-  SafeAreaProvider,
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { Jost_400Regular, Jost_700Bold } from "@expo-google-fonts/jost";
+import { Roboto_400Regular, Roboto_700Bold } from "@expo-google-fonts/roboto";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import InnerApp from "./InnerApp";
 
-const App = () => {
+SplashScreen.preventAutoHideAsync();
 
-  return (
-    <SafeAreaProvider>
-      <InnerApp />
-    </SafeAreaProvider>
-  );
+const App = () => {
+	const [loaded, error] = useFonts({
+		Jost_400Regular,
+		Jost_700Bold,
+		Roboto_400Regular,
+		Roboto_700Bold,
+	});
+
+	useEffect(() => {
+		if (loaded || error) {
+			SplashScreen.hideAsync();
+		}
+	}, [loaded, error]);
+
+	if (!loaded && !error) {
+		return null;
+	}
+
+	return (
+		<SafeAreaProvider>
+			<InnerApp />
+		</SafeAreaProvider>
+	);
 };
 
 export default App;
